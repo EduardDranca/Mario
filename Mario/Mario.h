@@ -21,8 +21,12 @@ private:
 	float maxRunningSpeed;
 	float jumpingSpeed;
 
+	bool jumpAllowed;
+
 	State state;
 	void updateSpeed(float dt, float maxSpeed);
+
+	void setJumpAllowed(bool jumpAllowed);
 public:
 
 	Mario();
@@ -32,5 +36,7 @@ public:
 
 	void setState(State state);
 	State getState();
+
+	bool canJump();
 };
 

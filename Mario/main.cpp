@@ -44,17 +44,17 @@ int main()
 				break;
 			case sf::Event::KeyPressed:
 			{
-				if (event.key.code == sf::Keyboard::A)
+				if (event.key.code == sf::Keyboard::A && mario.getState() != Mario::State::JUMPING)
 				{
 					mario.setState(Mario::State::WALKING);
 					mario.setDirection(Character::Dir::LEFT);
 				}
-				else if (event.key.code == sf::Keyboard::D)
+				else if (event.key.code == sf::Keyboard::D && mario.getState() != Mario::State::JUMPING)
 				{
 					mario.setState(Mario::State::WALKING);
 					mario.setDirection(Character::Dir::RIGHT);
 				}
-				if (event.key.code == sf::Keyboard::W)
+				if (event.key.code == sf::Keyboard::W && mario.canJump())
 				{
 					mario.setState(Mario::State::JUMPING);
 				}

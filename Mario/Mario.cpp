@@ -18,6 +18,12 @@ Mario::~Mario()
 
 void Mario::update(float dt)
 {
+	//doar testare
+	if (getPosition().y == 100.f)
+	{
+		setJumpAllowed(true);
+	}
+
 	switch (state)
 	{
 	case State::IDLE:
@@ -44,6 +50,7 @@ void Mario::update(float dt)
 	{
 		//doar pentru testare
 		sf::Vector2f speed = getSpeed();
+
 		if (getPosition().y < 100.f)
 		{
 			std::cout << "speed: " << speed.y << std::endl;
@@ -71,7 +78,6 @@ void Mario::update(float dt)
 	{
 		sf::Vector2f speed = getSpeed();
 
-		std::cout << "speed" << speed.x << std::endl;
 		if (getDirection() == Dir::LEFT)
 		{
 			if (speed.x > 0)
@@ -141,8 +147,10 @@ void Mario::setState(State state)
 		setMoving(true);
 		break;
 	case JUMPING:
+		setJumpAllowed(false);
 		setSpeed(sf::Vector2f(getSpeed().x, -100.f));
 		setAnimationType(Animation::IDLE);
+		setMoving(true);
 		break;
 	case IDLE:
 		setAnimationType(Animation::IDLE);
@@ -154,6 +162,11 @@ void Mario::setState(State state)
 Mario::State Mario::getState()
 {
 	return state;
+}
+
+bool Mario::canJump()
+{
+	return jumpAllowed;
 }
 
 void Mario::updateSpeed(float dt, float maxSpeed)
@@ -171,5 +184,10 @@ void Mario::updateSpeed(float dt, float maxSpeed)
 
 	clamp(-maxSpeed, maxSpeed, speed.x);
 	setSpeed(speed);
+}
+
+void Mario::setJumpAllowed(bool jumpAllowed)
+{
+	this->jumpAllowed = jumpAllowed;
 }
 
