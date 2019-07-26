@@ -13,6 +13,7 @@ private:
 	sf::Clock gameClock;
 
 	void update(float dt);
+	void run();
 
 	Mario player;
 public:

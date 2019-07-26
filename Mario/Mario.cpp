@@ -18,9 +18,25 @@ Mario::~Mario()
 
 void Mario::update(float dt)
 {
+	//TODO:
+	// refa tot ce tine de miscare si sarit si tot :(((
+
 	//doar testare
-	if (getPosition().y == 100.f)
+
+
+	if (getPosition().y < 400.f)
 	{
+		auto speed = getSpeed();
+		speed.y += 2000.f * dt;
+		setSpeed(speed);
+	}
+
+	if (getPosition().y >= 400.f && getSpeed().y >= 0)
+	{
+		auto speed = getSpeed();
+		speed.y = 0;
+		setSpeed(speed);
+		setPosition(sf::Vector2f(getPosition().x, 400.f));
 		setJumpAllowed(true);
 	}
 
@@ -49,20 +65,28 @@ void Mario::update(float dt)
 	case State::JUMPING:
 	{
 		//doar pentru testare
-		sf::Vector2f speed = getSpeed();
 
-		if (getPosition().y < 100.f)
+		if (isMoving())
 		{
-			std::cout << "speed: " << speed.y << std::endl;
-			speed.y += 1000.f * dt;
-			setSpeed(speed);
+			updateSpeed(dt, maxWalkingSpeed);
 		}
-		else if (speed.y >= 0.f)
+
+		sf::Vector2f speed = getSpeed();
+		std::cout << "speed: " << speed.x << ' ' << speed.y << std::endl;
+	
+		if (speed.y >= 0.f && getPosition().y >= 400.f)
 		{
 			speed.y = 0.f;
 			setSpeed(speed);
-			setPosition(sf::Vector2f(getPosition().x, 100.f));
-			setState(State::IDLE);
+			setPosition(sf::Vector2f(getPosition().x, 400.f));
+			if (speed.x == 0)
+			{
+				setState(State::IDLE);
+			}
+			else
+			{
+				setState(State::WALKING);
+			}
 		}
 	}
 	case State::SWIMMING:
@@ -74,53 +98,67 @@ void Mario::update(float dt)
 	getAnimation().update(dt);
 	
 	//TODO: muta tot intr-o singura functie
+
 	if (isMoving())
 	{
-		sf::Vector2f speed = getSpeed();
-
-		if (getDirection() == Dir::LEFT)
+		auto speed = getSpeed();
+		if (getDirection() == Dir::LEFT && speed.x > 0)
 		{
-			if (speed.x > 0)
-			{
-				speed.x -= 3 * acceleration * dt;
-			}
+			speed.x -= 2 * acceleration * dt;
 		}
-		else
+		if (getDirection() == Dir::RIGHT && speed.x < 0)
 		{
-			if (speed.x < 0)
-			{
-				speed.x += 3 * acceleration * dt;
-			}
+			speed.x += 2 * acceleration * dt;
 		}
 		setSpeed(speed);
 	}
-
 	if (!isMoving() && state != State::IDLE)
 	{
+		std::cout << "Hey" << std::endl;
 		sf::Vector2f speed = getSpeed();
 
 		if (getDirection() == Dir::LEFT)
 		{
 			if (speed.x < 0)
 			{
-				speed.x += 3 * acceleration * dt;
+				if (state == State::JUMPING)
+				{
+					speed.x += acceleration * dt;
+				}
+				else
+				{
+					speed.x += 3 * acceleration * dt;	
+				}
 			}
 			else
 			{
 				speed.x = 0;
-				setState(State::IDLE);
+				if (state != State::JUMPING)
+				{
+					setState(State::IDLE);
+				}
 			}
 		}
 		else
 		{
 			if (speed.x > 0)
 			{
-				speed.x -= 3 * acceleration * dt;
+				if (state == State::JUMPING)
+				{
+					speed.x -= acceleration * dt;
+				}
+				else
+				{
+					speed.x -= 3 * acceleration * dt;
+				}
 			}
 			else
 			{
 				speed.x = 0;
-				setState(State::IDLE);
+				if (state != State::JUMPING)
+				{
+					setState(State::IDLE);
+				}
 			}
 		}
 		setSpeed(speed);
@@ -136,7 +174,6 @@ void Mario::setState(State state)
 	{
 	case WALKING:
 		setAnimationType(Animation::WALK);
-		setMoving(true);
 		break;
 	case RUNNING:
 		setAnimationType(Animation::RUN);
@@ -148,9 +185,7 @@ void Mario::setState(State state)
 		break;
 	case JUMPING:
 		setJumpAllowed(false);
-		setSpeed(sf::Vector2f(getSpeed().x, -100.f));
-		setAnimationType(Animation::IDLE);
-		setMoving(true);
+		setAnimationType(Animation::JUMP);
 		break;
 	case IDLE:
 		setAnimationType(Animation::IDLE);
@@ -172,7 +207,6 @@ bool Mario::canJump()
 void Mario::updateSpeed(float dt, float maxSpeed)
 {
 	sf::Vector2f speed = getSpeed();
-	std::cout << speed.x << std::endl;
 	if (getDirection() == Character::Dir::LEFT)
 	{
 		speed.x -= acceleration * dt;

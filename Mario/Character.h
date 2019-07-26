@@ -19,6 +19,7 @@ private:
 	sf::Vector2f position;
 	bool moving;
 	bool directionChanged;
+	bool flipped;
 	Dir direction;
 
 	int currentAnimationType;
@@ -36,12 +37,14 @@ public:
 	void setAnimationType(int animation);
 	void setMoving(bool moving);
 	void setDirection(Dir direction);
+	void setFlipped(bool flipped);
 	void updatePosition(float dt);
 
 	sf::Vector2f getSpeed();
 	sf::Vector2f getPosition();
 	int getAnimationType();
 	bool isMoving();
+	bool getFlipped();
 	Dir getDirection();
 
 	Animation & getAnimation();

@@ -15,6 +15,7 @@ Character::~Character()
 
 void Character::draw(sf::RenderWindow & renderWindow)
 {
+	animations[currentAnimationType].setFlipped(flipped);
 	animations[currentAnimationType].setPosition(position);
 	animations[currentAnimationType].draw(renderWindow);
 }
@@ -57,13 +58,18 @@ void Character::setDirection(Dir direction)
 		this->direction = direction;
 		if (direction == Dir::RIGHT)
 		{
-			animations[currentAnimationType].setFlipped(true);
+			setFlipped(true);
 		}
 		else
 		{
-			animations[currentAnimationType].setFlipped(false);
+			setFlipped(false);
 		}
 	}
+}
+
+void Character::setFlipped(bool flipped)
+{
+	this->flipped = flipped;
 }
 
 void Character::updatePosition(float dt)
@@ -89,6 +95,11 @@ int Character::getAnimationType()
 bool Character::isMoving()
 {
 	return moving;
+}
+
+bool Character::getFlipped()
+{
+	return flipped;
 }
 
 Character::Dir Character::getDirection()

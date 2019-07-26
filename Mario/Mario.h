@@ -38,5 +38,7 @@ public:
 	State getState();
 
 	bool canJump();
+
+	friend class Command;
 };
 

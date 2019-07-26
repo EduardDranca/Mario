@@ -92,6 +92,8 @@ Animation::Animation(const Animation & animation) : texture(animation.texture)
 	texture = animation.texture;
 	sprite = animation.sprite;
 	sprite.setTexture(*texture);
+	sprite.setTextureRect(frameRectangles[currentFrame]);
+	sprite.setOrigin(spriteOrigins[currentFrame]);
 }
 
 Animation::Animation(sf::Texture * texture) : texture(texture)
@@ -116,6 +118,8 @@ Animation & Animation::operator=(const Animation & animation)
 	texture = animation.texture;
 	sprite = animation.sprite;
 	sprite.setTexture(*texture);
+	sprite.setTextureRect(frameRectangles[currentFrame]);
+	sprite.setOrigin(spriteOrigins[currentFrame]);
 	
 	return *this;
 }

@@ -126,18 +126,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="JumpCommand.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="StopMovingCommand.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="StopMovingCommand.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
