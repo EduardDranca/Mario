@@ -7,6 +7,11 @@ InputHandler::~InputHandler()
 {
 }
 
+void InputHandler::setReceiver(Mario * mario)
+{
+	this->mario = mario;
+}
+
 void InputHandler::handleInput(const sf::Event & event)
 {
 	//TODO: adauga un map in care sa tii actiunile impreuna cu tastele corespunzatoare

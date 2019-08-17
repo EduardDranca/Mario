@@ -2,8 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Mario.h"
 #include "InputHandler.h"
+#include "Mario.h"
+#include "World.h"
 
 int main()
 {
@@ -19,7 +20,7 @@ int main()
 	a.addFrame(sf::IntRect(34, 8, 15, 16), sf::Vector2f(8, 15), 1);
 	a.setFrameRate(20);
 
-	Mario mario;
+	Mario & mario = TheWorld->getPlayer();
 	mario.addAnimation(a, Animation::WALK);
 
 	Animation b(&t);
@@ -36,63 +37,5 @@ int main()
 
 	mario.setPosition(sf::Vector2f(100.f, 100.f));
 
-	sf::Clock clk;
-
-	InputHandler inputHandler(&mario);
-
-	while (gameWindow.isOpen())
-	{
-		sf::Event event;
-
-		while (gameWindow.pollEvent(event))
-		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
-				gameWindow.close();
-				break;
-			/*case sf::Event::KeyPressed:
-			{
-				if (event.key.code == sf::Keyboard::A)
-				{
-					if (mario.getState() == Mario::State::IDLE)
-						mario.setState(Mario::State::WALKING);
-					mario.setMoving(true);
-					mario.setDirection(Character::Dir::LEFT);
-				}
-				else if (event.key.code == sf::Keyboard::D)
-				{
-					if (mario.getState() == Mario::State::IDLE)
-						mario.setState(Mario::State::WALKING);
-					mario.setMoving(true);
-					mario.setDirection(Character::Dir::RIGHT);
-				}
-				if (event.key.code == sf::Keyboard::W && mario.canJump())
-				{
-					mario.setState(Mario::State::JUMPING);
-				}
-				break;
-			}
-			case sf::Event::KeyReleased:
-			{
-				if (event.key.code == sf::Keyboard::A && mario.getDirection() == Character::Dir::LEFT)
-				{
-					mario.setMoving(false);
-				}
-				else if (event.key.code == sf::Keyboard::D && mario.getDirection() == Character::Dir::RIGHT)
-				{
-					mario.setMoving(false);
-				}
-				break;
-			}*/
-			}
-			inputHandler.handleInput(event);
-		}
-		gameWindow.clear(sf::Color::Black);
-		mario.draw(gameWindow);
-		gameWindow.display();
-		mario.update(clk.getElapsedTime().asSeconds());
-
-		clk.restart();
-	}
+	TheWorld->run();
 }
